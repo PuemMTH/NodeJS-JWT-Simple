@@ -10,7 +10,7 @@
     <style>
         body{
             height: 100vh;
-            background: url("https://files.yande.re/image/a13c8a98508d667fccbf06ac321934a4/yande.re%20949318%20animal_ears%20arknights%20ddddecade%20dress%20kitsune%20nipples%20no_bra%20nopan%20see_through%20shamare_%28arknights%29%20stockings%20suzuran_%28arknights%29%20tail%20thighhighs.jpg") no-repeat center center fixed;
+            background: url("http://localhost/stockings.jpg") no-repeat center center fixed;
             background-size: cover;
         } 
         .container{
@@ -21,17 +21,17 @@
 </head>
 <body>
     <div class="container d-flex justify-content-center align-items-center">
-        <div class="btn btn-dark btn-lg m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <div class="btn btn-dark btn-lg m-2" data-bs-toggle="modal" data-bs-target="#register">
             Regster
         </div>
-        <div class="btn btn-primary btn-lg m-2">
+        <div class="btn btn-primary btn-lg m-2" data-bs-toggle="modal" data-bs-target="#login">
             Login
         </div>
     </div>
 
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form>
+            <form id="form-register" action="/register" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Register</h5>
@@ -39,12 +39,12 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="Tanapat">
+                            <label for="name">Firstname</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter name" value="Tanapat">
                         </div>
                         <div class="form-group">
                             <label for="lastname">Lastname</label>
-                            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter lastname" value="Eiam-arj">
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter lastname" value="Eiam-arj">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
@@ -61,30 +61,32 @@
                     </div>
                 </div>
             </form>
-            <script>
-                $('form').submit(async function(e){
-                    let headersList = {
-                        "Content-Type": "application/json"
-                    }
-                    let bodyContent = JSON.stringify({
-                        "name": $('#name').val(),
-                        "lastname": $('#lastname').val(),
-                        "email": $('#email').val(),
-                        "password": $('#password').val()
-                    });
-                    await fetch("localhost/register", {
-                        method: "POST",
-                        body: bodyContent,
-                        headers: headersList
-                    }).then(function(response) {
-                        return response.text();
-                    }).then(function(data) {
-                        console.log(data);
-                    }).catch(function(error) {
-                        console.log(error);
-                    });
-                });
-            </script>
+        </div>
+    </div>
+    <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="form-login" action="/login" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="puem.mth@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" value="1234">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary my-2 text-end">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
