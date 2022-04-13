@@ -24,16 +24,23 @@ app.use(express.static('public'));
 //     next();
 // });
 
-app.get('/welcome', auth, (req, res) => {
+app.post('/welcome', auth, (req, res) => {
     res.json({
         message: 'Welcome to the API',
-        user: req.user
+        token: req.user
     })
 })
 
+app.get('/jo', (req, res) => {
+    res.json({
+        message: 'Welcome to the API',
+        user: req.token
+    })
+});
+
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    if(!email || !password) {
+    const { email_log, password_log } = req.body;
+    if(!email_log || !password_log) {
         return res.status(400).json({
             message: 'Please provide email and password',
             success: false,
@@ -41,18 +48,18 @@ app.post('/login', async (req, res) => {
         });
     }
 
-    if(email && password){
+    if(email_log && password_log){
         (async () => {
             // const user = db.query(`SELECT * FROM jwt_users WHERE email = '${email}'`);
             // decpassword = await bcrypt.compare(password, password);
-            const user = db.query(`SELECT * FROM jwt_users WHERE email = ?`, [email], async (err, result) => {
+            const user = db.query(`SELECT * FROM jwt_users WHERE email = ?`, [email_log], async (err, result) => {
                 if(result.length == 0){
                     res.status(401).json({
                         message: 'Invalid email or password'
                     })
                 }
                 if(result.length > 0){
-                    decpassword = await bcrypt.compare(password, result[0].password);
+                    decpassword = await bcrypt.compare(password_log, result[0].password);
                     if(decpassword == true){
                         // console.assert(decpassword == true);
                          const token = jwt.sign(
@@ -66,14 +73,14 @@ app.post('/login', async (req, res) => {
                                 expiresIn: '2h'
                             }
                         )
-                        db.query(`UPDATE jwt_users SET token = ? WHERE email = ?`, [token, email], (err, result) => {
+                        db.query(`UPDATE jwt_users SET token = ? WHERE email = ?`, [token, email_log], (err, result) => {
                             if(err){
                                 res.status(500).json({
                                     message: 'Internal server error'
                                 })
                             }
                             if(result){
-                                res.setHeader('x-access-token', token);
+                                // res.setHeader('x-access-token', token);
                                 res.redirect(`/welcome&token=${token}`);
                             }
                         });
